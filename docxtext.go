@@ -6,7 +6,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"strings"
 )
 
 // GetXmlContent extracts the XML content from a .docx file.
@@ -25,7 +25,7 @@ func GetXmlContent(docxFile string) ([]byte, error) {
 			}
 			defer rc.Close()
 
-			content, err := ioutil.ReadAll(rc)
+			content, err := io.ReadAll(rc) // Changed from ioutil.ReadAll to io.ReadAll
 			if err != nil {
 				return nil, fmt.Errorf("error reading document.xml: %w", err)
 			}
@@ -40,9 +40,9 @@ func GetXmlContent(docxFile string) ([]byte, error) {
 // GetTextByParagraph parses XML content and extracts text by paragraphs.
 func GetTextByParagraph(content []byte) ([]string, error) {
 	decoder := xml.NewDecoder(bytes.NewReader(content))
-	var inElement string
-	var paragraphText string
 	var resultStrings []string
+	var builder strings.Builder // 使用strings.Builder优化字符串拼接
+	inParagraph := false
 
 	for {
 		t, err := decoder.Token()
@@ -58,20 +58,19 @@ func GetTextByParagraph(content []byte) ([]string, error) {
 
 		switch se := t.(type) {
 		case xml.StartElement:
-			inElement = se.Name.Local
-			if inElement == "p" {
-				paragraphText = ""
+			if se.Name.Local == "p" {
+				inParagraph = true
+				builder.Reset() // 重置builder准备收集新段落
 			}
 		case xml.CharData:
-			if inElement == "t" {
-				paragraphText += string(se)
+			if inParagraph {
+				builder.WriteString(string(se)) // 收集段落文本
 			}
 		case xml.EndElement:
-			if se.Name.Local == "p" && len(paragraphText) > 0 {
-				resultStrings = append(resultStrings, paragraphText)
-				paragraphText = ""
+			if se.Name.Local == "p" && builder.Len() > 0 {
+				resultStrings = append(resultStrings, builder.String())
+				inParagraph = false // 更新状态，表示当前不在段落内
 			}
-			inElement = ""
 		}
 	}
 
