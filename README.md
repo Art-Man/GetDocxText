@@ -21,7 +21,7 @@ go get github.com/Art-Man/GetDocxText
 package main
 
 import (
-    "github.com/Art-Man/GetDocxText/docxtext"
+    "github.com/Art-Man/GetDocxText"
     "log"
 )
 
@@ -80,7 +80,7 @@ go get github.com/Art-Man/GetDocxText
 package main
 
 import (
-    "github.com/Art-Man/GetDocxText/docxtext"
+    "github.com/Art-Man/GetDocxText"
     "log"
 )
 
