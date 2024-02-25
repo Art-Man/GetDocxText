@@ -1,10 +1,5 @@
 # GetDocxText
 
-### 中文版
-
-```markdown
-# GetDocxText
-
 ## 简介
 
 `GetDocxText`是一个Go语言编写的库，用于从Microsoft Word文档（.docx格式）中提取文本内容。该库提供了两个主要的公共方法，使开发者能够轻松集成此功能到他们的项目中。
@@ -62,12 +57,7 @@ go test -v ./docxtext
 ## 许可证
 
 该项目使用MIT许可证，详情请见LICENSE文件。
-```
 
-### English Version
-
-```markdown
-# GetDocxText
 
 ## Introduction
 
@@ -126,6 +116,3 @@ Contributions via GitHub pull requests and issues are welcome.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-```
-
-这些README文件提供了关于如何安装、使用和为`GetDocxText`项目贡献的基本指南。确保在项目的根目录下创建`README.md`文件，并将上述内容粘贴到相应的文件中。
